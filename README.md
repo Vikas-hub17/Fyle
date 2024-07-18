@@ -62,3 +62,13 @@ ADD WORKOUT
 ```
 
 4. You can access the project at http://localhost:4200
+
+### Unit Test
+
+1. Browse to the folder for all the Unit test - Health\coverage\health-track
+
+2. Running unit test
+
+ ```bash
+    ng test
+```
