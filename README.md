@@ -74,10 +74,17 @@ Health Challenge Tracker is a web application for tracking and exploring workout
 
 ### Unit Test
 
-1. Browse to the folder for all the Unit test - Health\coverage\health-track
+1. Browse to the folder for all the Unit test
 
-2. Running unit test
+   ```bash
+      cd Health
+      cd Health\coverage
+      cd Health\coverage\health-track
+   ```
 
- ```bash
-    ng test
-```
+2. Command for running unit test
+   
+   ```bash
+      ng test
+   ```
+
