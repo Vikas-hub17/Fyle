@@ -1,4 +1,4 @@
-Health Challenge Tracker🤸‍♂️
+![Screenshot 2024-07-19 150543](https://github.com/user-attachments/assets/1bade283-74ee-481e-921c-41f1ae3c8d29)Health Challenge Tracker🤸‍♂️
 
 Health Challenge Tracker is a web application for tracking and exploring workout activities. Users can add, filter, and view detailed workout progress.
 
@@ -88,3 +88,13 @@ Health Challenge Tracker is a web application for tracking and exploring workout
       ng test
    ```
 
+## Code coverage for Home Component
+
+![Screenshot 2024-07-19 150543](https://github.com/user-attachments/assets/cbb531c0-8812-42c3-870e-db96bd98386a)
+
+
+![Screenshot 2024-07-19 150555](https://github.com/user-attachments/assets/53087679-9592-458c-bee4-d24805948674)
+
+
+
+   
