@@ -1,7 +1,0 @@
-[build]
-  publish = "Health-Challenge/Health"
-  command = "ng build"
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
