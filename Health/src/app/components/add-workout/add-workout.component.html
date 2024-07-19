@@ -8,7 +8,7 @@
         <form [formGroup]="workoutForm" (submit)="onSubmit()" class="mt-6 flex flex-col items-start gap-3 text-lg">
             <input formControlName="name" type="text" placeholder="Username" required class="px-4 py-3 focus:outline-none border-2 border-black rounded" />
             <input formControlName="duration" type="number" placeholder="Duration" required class="px-4 py-3 focus:outline-none border-2 border-black rounded" />
-            <select class="p-2" formControlName="type">
+            <select class="p-2 text-cyan-500" formControlName="type">
                 <option value="Gym">Gym</option>
                 <option value="Cycling">Cycling</option>
                 <option value="Swimming">Swimming</option>
