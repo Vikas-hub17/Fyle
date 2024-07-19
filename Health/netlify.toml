@@ -1,5 +1,5 @@
 [build]
-  publish = "dist/health-track"
+  publish = "Health-Challenge/Health"
   command = "ng build"
 [[redirects]]
   from = "/*"
