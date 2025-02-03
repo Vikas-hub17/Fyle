@@ -11,3 +11,14 @@
 .logo{
     font-family: 'Lilita One', cursive;
 }
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    to { transform: rotate(359deg); }
+  }
+  
+  @-webkit-keyframes fa-spin {
+    0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    to { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
+  }
+  
