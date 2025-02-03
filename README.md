@@ -88,9 +88,9 @@ Health Challenge Tracker is a web application for tracking and exploring workout
       ng test
    ```
 
-## Code coverage for Home Component
+## 100% Code coverage for 1 component and 1 service 
 
-![Screenshot 2024-07-19 150543](https://github.com/user-attachments/assets/cbb531c0-8812-42c3-870e-db96bd98386a)
+Link : https://code-coverage-fyle.netlify.app/
 
 
 ![Screenshot 2024-07-19 150555](https://github.com/user-attachments/assets/53087679-9592-458c-bee4-d24805948674)
