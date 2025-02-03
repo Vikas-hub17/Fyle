@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common'; 
 
 interface Workout {
   type: string;
@@ -16,10 +18,11 @@ interface UserData {
 @Component({
   selector: 'app-add-workout',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule],
+  imports: [ReactiveFormsModule,RouterModule,CommonModule],
   templateUrl: './add-workout.component.html',
   styleUrl: './add-workout.component.css',
 })
+
 export class AddWorkoutComponent {
   workoutForm = new FormGroup({
     name: new FormControl('',[Validators.required]),

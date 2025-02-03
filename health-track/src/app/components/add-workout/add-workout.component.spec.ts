@@ -103,4 +103,56 @@ describe('AddWorkoutComponent', () => {
     expect(localStorage.getItem('userData')).toBeTruthy();
     expect(router.navigate).not.toHaveBeenCalled();
   });
+
+  it('should not create a workout if duration is invalid (non-numeric)', () => {
+    spyOn(router, 'navigate');
+    const form = component.workoutForm;
+
+    form.controls['name'].setValue('John Doe');
+    form.controls['duration'].setValue('invalid');
+    form.controls['type'].setValue('Running');
+
+    component.onSubmit();
+
+    const updatedUserData = JSON.parse(localStorage.getItem('userData')!);
+    const user = updatedUserData.find((u: any) => u.name === 'John Doe');
+
+    expect(user?.workouts.length).toBe(1); // No new workout should be added
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should not create a workout if name is missing', () => {
+    spyOn(router, 'navigate');
+    const form = component.workoutForm;
+
+    form.controls['name'].setValue('');
+    form.controls['duration'].setValue('30');
+    form.controls['type'].setValue('Yoga');
+
+    component.onSubmit();
+
+    const updatedUserData = JSON.parse(localStorage.getItem('userData')!);
+    const user = updatedUserData.find((u: any) => u.name === '');
+
+    expect(user).toBeUndefined(); // No user should be created
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should prevent duplicate workouts for an existing user', () => {
+    spyOn(router, 'navigate');
+    const form = component.workoutForm;
+
+    form.controls['name'].setValue('Jane Smith');
+    form.controls['duration'].setValue('30');
+    form.controls['type'].setValue('Running');
+
+    component.onSubmit();
+
+    const updatedUserData = JSON.parse(localStorage.getItem('userData')!);
+    const user = updatedUserData.find((u: any) => u.name === 'Jane Smith');
+
+    // Since the workout already exists, it shouldn't be duplicated
+    expect(user?.workouts.length).toBe(1); // Only 1 workout should be present
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
 });

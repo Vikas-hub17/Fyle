@@ -20,33 +20,63 @@
         </select>
     </form>
 
-    @if(filteredUserData()?.length === 0) {
-    <p class="mt-6 text-xl text-center">No workouts found</p>
+    @if (filteredUserData().length === 0) {
+        <p class="mt-6 text-xl text-center">No workouts found</p>
     } @else {
-    <p class="mt-6 text-xl text-center">Workouts found: {{ filteredUserData()?.length }}</p>
+        <p class="mt-6 text-xl text-center">Workouts found: {{ filteredUserData().length }}</p>
 
-    <table class="mt-6 w-full bg-slate-200 border border-black">
+        <table class="mt-6 w-full bg-slate-200 border border-black">
 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Workouts</th>
-                <th>Number of Workouts</th>
-                <th>Total Workout Minutes</th>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Workouts</th>
+                    <th>Number of Workouts</th>
+                    <th>Total Workout Minutes</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            <!-- Default Users (Always Displayed) -->
+            <tr *ngIf="userData[0]" class="border border-gray-800 p-3">
+                <td class="p-3 text-center">
+                    <a href="/{{userData[0].name}}" class="underline">{{ userData[0].name }}</a>
+                </td>
+                <td class="p-3 text-center">{{ getWorkoutTypes(userData[0].workouts) }}</td>
+                <td class="p-3 text-center">{{ userData[0].workouts.length }}</td>
+                <td class="p-3 text-center">{{ getTotalMinutes(userData[0].workouts) }}</td>
             </tr>
-        </thead>
 
-        @for (user of paginatedData; track $index) {
-        <!-- list the workouts -->
-        <tr class="border border-gray-800 p-3">
-            <a routerLink="/{{user.name}}" class="p-3 text-center flex items-center justify-center underline">{{
-                user.name }}</a>
-            <td class="p-3 text-center">{{ getWorkoutTypes(user.workouts) }}</td>
-            <td class="p-3 text-center">{{ user.workouts.length }}</td>
-            <td class="p-3 text-center">{{ getTotalMinutes(user.workouts) }}</td>
-        </tr>
-        }
-    </table>
+            <tr *ngIf="userData[1]" class="border border-gray-800 p-3">
+                <td class="p-3 text-center">
+                    <a href="/{{userData[1].name}}" class="underline">{{ userData[1].name }}</a>
+                </td>
+                <td class="p-3 text-center">{{ getWorkoutTypes(userData[1].workouts) }}</td>
+                <td class="p-3 text-center">{{ userData[1].workouts.length }}</td>
+                <td class="p-3 text-center">{{ getTotalMinutes(userData[1].workouts) }}</td>
+            </tr>
+
+            <tr *ngIf="userData[2]" class="border border-gray-800 p-3">
+                <td class="p-3 text-center">
+                    <a href="/{{userData[2].name}}" class="underline">{{ userData[2].name }}</a>
+                </td>
+                <td class="p-3 text-center">{{ getWorkoutTypes(userData[2].workouts) }}</td>
+                <td class="p-3 text-center">{{ userData[2].workouts.length }}</td>
+                <td class="p-3 text-center">{{ getTotalMinutes(userData[2].workouts) }}</td>
+            </tr>
+
+            <!-- List the filtered workouts -->
+            @for (user of paginatedData; track $index) {
+                <tr class="border border-gray-800 p-3">
+                    <td class="p-3 text-center">
+                        <a routerLink="/{{user.name}}" class="underline">{{ user.name }}</a>
+                    </td>
+                    <td class="p-3 text-center">{{ getWorkoutTypes(user.workouts) }}</td>
+                    <td class="p-3 text-center">{{ user.workouts.length }}</td>
+                    <td class="p-3 text-center">{{ getTotalMinutes(user.workouts) }}</td>
+                </tr>
+            }
+        </table>
     }
 
     <!-- pagination -->
@@ -57,7 +87,7 @@
         <button class="p-2 border border-black hover:bg-black transition-all hover:text-white" (click)="nextPage()"
             [disabled]="currentPage === totalPages">Next</button>
 
-            <p>Results per page: </p>
+        <p>Results per page:</p>
         <select name="noOfPages" id="noOfPages" (change)="changeItemsPerPage($event)">
             <option value="5">5</option>
             <option value="10">10</option>

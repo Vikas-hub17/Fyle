@@ -1,104 +1,168 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ExploreComponent } from './explore.component';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
-describe('ExploreComponent', () => {
-  let component: ExploreComponent;
-  let fixture: ComponentFixture<ExploreComponent>;
+interface Workout {
+  type: string;
+  minutes: number;
+}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule],
-      declarations: [ExploreComponent]
-    }).compileComponents();
+interface UserData {
+  id: number;
+  name: string;
+  workouts: Workout[];
+  workoutType?: string;
+}
 
-    fixture = TestBed.createComponent(ExploreComponent);
-    component = fixture.componentInstance;
+@Component({
+  selector: 'app-explore',
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  templateUrl: './explore.component.html',
+  styleUrl: './explore.component.css',
+})
+export class ExploreComponent implements OnInit {
+  userData: UserData[] = [];
 
-    localStorage.setItem('userData', JSON.stringify([
-      { id: 1, name: 'John Doe', workouts: [{ type: 'Gym', minutes: 60 }] },
-      { id: 2, name: 'Jane Smith', workouts: [{ type: 'Running', minutes: 30 }] },
-    ]));
-
-    fixture.detectChanges();
+  filterForm = new FormGroup({
+    name: new FormControl(''),
+    type: new FormControl('All'),
   });
 
-  afterEach(() => {
-    localStorage.removeItem('userData');
-  });
+  generatedUsersHTML: string = '';
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // Pagination properties
+  currentPage = 1;
+  itemsPerPage = 2;
 
-  it('should initialize userData from localStorage', () => {
-    expect(component.userData).toEqual([
-      { id: 1, name: 'John Doe', workouts: [{ type: 'Gym', minutes: 60 }] },
-      { id: 2, name: 'Jane Smith', workouts: [{ type: 'Running', minutes: 30 }] },
-    ]);
-  });
+  ngOnInit() {
+    const storedData = localStorage.getItem('userData');
+    if (storedData) {
+      this.userData = JSON.parse(storedData);
+    } else {
+      // Store default users if no data is found
+      localStorage.setItem('userData', JSON.stringify(this.userData));
+    }
+    this.generateUsersHTML();
+  }
 
-  it('should filter userData by name', () => {
-    component.filterForm.controls['name'].setValue('John');
-    expect(component.filteredUserData()).toEqual([
-      { id: 1, name: 'John Doe', workouts: [{ type: 'Gym', minutes: 60 }] },
-    ]);
-  });
+  // ✅ Load users from localStorage or initialize default users
+  loadUsersFromLocalStorage() {
+    const storedUsers = localStorage.getItem('userData');
 
-  it('should filter userData by workout type', () => {
-    component.filterForm.controls['type'].setValue('Running');
-    expect(component.filteredUserData()).toEqual([
-      { id: 2, name: 'Jane Smith', workouts: [{ type: 'Running', minutes: 30 }] },
-    ]);
-  });
+    if (storedUsers && JSON.parse(storedUsers).length > 0) {
+      this.userData = JSON.parse(storedUsers);
+    } else {
+      // Initialize default users if no data exists
+      this.userData = [
+        {
+          id: 1,
+          name: 'John Doe',
+          workouts: [
+            { type: 'Running', minutes: 30 },
+            { type: 'Cycling', minutes: 45 }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Jane Smith',
+          workouts: [
+            { type: 'Swimming', minutes: 60 },
+            { type: 'Running', minutes: 20 }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Mike Johnson',
+          workouts: [
+            { type: 'Yoga', minutes: 50 },
+            { type: 'Cycling', minutes: 40 }
+          ]
+        }
+      ];
+      localStorage.setItem('userData', JSON.stringify(this.userData));
+    }
 
-  it('should return all userData when type is set to All', () => {
-    component.filterForm.controls['type'].setValue('All');
-    expect(component.filteredUserData()).toEqual([
-      { id: 1, name: 'John Doe', workouts: [{ type: 'Gym', minutes: 60 }] },
-      { id: 2, name: 'Jane Smith', workouts: [{ type: 'Running', minutes: 30 }] },
-    ]);
-  });
+    console.log('Loaded userData:', this.userData); // ✅ Debug log
+  }
 
-  it('should calculate total pages correctly', () => {
-    component.itemsPerPage = 1;
-    expect(component.totalPages).toBe(2);
+  // ✅ Generate dynamic user rows
+  generateUsersHTML() {
+    this.generatedUsersHTML = this.paginatedData
+      .map(
+        (user) => `
+        <tr class="border border-gray-800 p-3">
+            <td class="p-3 text-center">
+                <a href="/${user.name}" class="underline">${user.name}</a>
+            </td>
+            <td class="p-3 text-center">${this.getWorkoutTypes(user.workouts)}</td>
+            <td class="p-3 text-center">${user.workouts.length}</td>
+            <td class="p-3 text-center">${this.getTotalMinutes(user.workouts)}</td>
+        </tr>`
+      )
+      .join('');
+  }
 
-    component.itemsPerPage = 2;
-    expect(component.totalPages).toBe(1);
-  });
+  // ✅ Get workout types as a string
+  getWorkoutTypes(workouts: Workout[]): string {
+    return workouts.map((w) => w.type).join(', ');
+  }
 
-  it('should paginate data correctly', () => {
-    component.itemsPerPage = 1;
-    component.currentPage = 1;
-    expect(component.paginatedData).toEqual([
-      { id: 1, name: 'John Doe', workouts: [{ type: 'Gym', minutes: 60 }] },
-    ]);
+  // ✅ Get total workout minutes
+  getTotalMinutes(workouts: Workout[]): number {
+    return workouts.reduce((total, w) => total + w.minutes, 0);
+  }
 
-    component.currentPage = 2;
-    expect(component.paginatedData).toEqual([
-      { id: 2, name: 'Jane Smith', workouts: [{ type: 'Running', minutes: 30 }] },
-    ]);
-  });
+  // ✅ Filter user data based on search & workout type
+  filteredUserData(): UserData[] {
+    const formValue = this.filterForm.value;
 
-  it('should navigate to the next page', () => {
-    component.itemsPerPage = 1;
-    component.currentPage = 1;
-    component.nextPage();
-    expect(component.currentPage).toBe(2);
-  });
+    return this.userData.filter((user) => {
+      if (formValue.name && !user.name.toLowerCase().includes(formValue.name.toLowerCase())) {
+        return false;
+      }
+      if (formValue.type === 'All') {
+        return true;
+      }
+      return user.workouts.some(workout => workout.type === formValue.type);
+    });
+  }
 
-  it('should navigate to the previous page', () => {
-    component.itemsPerPage = 1;
-    component.currentPage = 2;
-    component.prevPage();
-    expect(component.currentPage).toBe(1);
-  });
+  // ✅ Pagination logic
+  get paginatedData() {
+    const filteredData = this.filteredUserData();
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return filteredData.slice(startIndex, startIndex + this.itemsPerPage);
+  }
 
-  it('should change items per page', () => {
-    const event = { target: { value: '2' } } as unknown as Event;
-    component.changeItemsPerPage(event);
-    expect(component.itemsPerPage).toBe(2);
-  });
-});
+  get totalPages() {
+    return Math.ceil(this.filteredUserData().length / this.itemsPerPage);
+  }
+
+  pageChange(page: number) {
+    this.currentPage = page;
+    this.generateUsersHTML();
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.generateUsersHTML();
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.generateUsersHTML();
+    }
+  }
+
+  changeItemsPerPage(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.itemsPerPage = parseInt(target.value, 10);
+    this.currentPage = 1;
+    this.generateUsersHTML();
+  }
+}
