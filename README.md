@@ -54,8 +54,8 @@ Health Challenge Tracker is a web application for tracking and exploring workout
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Vikas-hub17/health.git
-   cd health
+   git clone https://github.com/Vikas-hub17/health-track.git
+   cd health-track
    ```
 
 2. Install dependencies
@@ -67,7 +67,7 @@ Health Challenge Tracker is a web application for tracking and exploring workout
 3. Run the project
 
 ```bash
-   npm start
+   npm run start
 ```
 
 4. You can access the project at http://localhost:4200
@@ -77,9 +77,7 @@ Health Challenge Tracker is a web application for tracking and exploring workout
 1. Browse to the folder for all the Unit test
 
    ```bash
-      cd Health
-      cd Health\coverage
-      cd Health\coverage\health-track
+      cd coverage\health-track
    ```
 
 2. Command for running unit test
@@ -88,9 +86,9 @@ Health Challenge Tracker is a web application for tracking and exploring workout
       ng test
    ```
 
-## Code coverage for Home Component
+## 100% Code coverage for 1 component and 1 service 
 
-![Screenshot 2024-07-19 150543](https://github.com/user-attachments/assets/cbb531c0-8812-42c3-870e-db96bd98386a)
+Link : https://code-coverage-fyle.netlify.app/
 
 
 ![Screenshot 2024-07-19 150555](https://github.com/user-attachments/assets/53087679-9592-458c-bee4-d24805948674)
