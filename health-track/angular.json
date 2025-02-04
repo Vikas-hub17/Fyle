@@ -13,11 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-<<<<<<< HEAD
             "outputPath": "dist/",
-=======
-            "outputPath": "dist/health-track",
->>>>>>> 45eafde67028d280d0e188eb2b271acc40d960e6
             "baseHref": "/",
             "index": "src/index.html",
             "browser": "src/main.ts",
